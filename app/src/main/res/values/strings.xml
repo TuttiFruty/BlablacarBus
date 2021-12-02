@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Blablacar Bus</string>
+    <string name="failed_bus_stops_retrieved">Echec de récuperation des arrêts de bus.</string>
+    <string name="generic_error">Une erreur est survenue, merci de réessayer plus tard.</string>
+    <string name="latitude">Latitude : </string>
+    <string name="longitude">Longitude : </string>
+    <string name="adress">"Adresse : "</string>
+    <string name="destinations">"Destinations : "</string>
+    <string name="stop_bus">Arrêt de bus</string>
+    <string name="bus_stop_details">Details de l\'arrêt de bus</string>
+</resources>

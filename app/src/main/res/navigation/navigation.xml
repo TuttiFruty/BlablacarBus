@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation"
+            app:startDestination="@id/busStopsFragment">
+
+    <fragment android:id="@+id/busStopsFragment"
+              android:name="fr.tuttifruty.blablacarbus.ui.busstops.BusStopsFragment"
+              android:label="@string/stop_bus"
+              tools:layout="@layout/fragment_bus_stops">
+        <action
+            android:id="@+id/action_busStopsFragment_to_busStopDetailsFragment"
+            app:destination="@id/busStopDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/busStopDetailsFragment"
+        android:name="fr.tuttifruty.blablacarbus.ui.busstopdetails.BusStopDetailsFragment"
+        android:label="@string/bus_stop_details"
+        tools:layout="@layout/fragment_bus_stop_details">
+        <argument
+            android:name="busStop"
+            app:argType="fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>
