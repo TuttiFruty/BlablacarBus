@@ -16,4 +16,11 @@
     <string name="location_permission_denied">Vous n\'avez pas accepter la permission de géolocalisation</string>
     <string name="retry">Réessayer</string>
     <string name="location_permission_needed">Pour pouvoir trier les arrêts selon votre géolocalisation, nous avons besoin de votre permissions pour accéder à votre emplacement.</string>
+    <string name="fares">Coût du trajet</string>
+    <string name="cost">Coût : %d %s</string>
+    <string name="first_bus">Bus de départ : %s</string>
+    <string name="id_bus">Id : %d</string>
+    <string name="departure">Départ : %s</string>
+    <string name="arrival">Arrivé : %s</string>
+    <string name="no_fares">Aucun résultat trouvé pour ce trajet</string>
 </resources>

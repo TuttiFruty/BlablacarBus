@@ -25,12 +25,12 @@ class PersistAllBusStopsUseCaseImpl(
 
     override suspend fun invoke(input: Nothing?): Result<Nothing?> {
         return withContext(dispatcher) {
-            val busStops = busStopsRepository.getAllBusStops()
-            if (busStops != null) {
+            if (busStopsLocalRepository.countAllBusStops() == 0) {
+                val busStops = busStopsRepository.getAllBusStops()
                 busStopsLocalRepository.persistAllBusStops(busStops)
                 Result.success(null)
             } else {
-                Result.failure(PersistAllBusStopsUseCase.Errors.FailedPersistAllBusStops())
+                Result.success(null)
             }
         }
     }

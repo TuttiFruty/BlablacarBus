@@ -44,4 +44,10 @@ class BusStopsLocalRepositoryImpl(
             dao.findById(busStopID)?.asDomainModel()
         }
     }
+
+    override suspend fun countAllBusStops(): Int {
+        return withContext(dispatcher) {
+            dao.countAllBusStop()
+        }
+    }
 }

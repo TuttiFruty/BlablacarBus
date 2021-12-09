@@ -16,7 +16,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import fr.tuttifruty.blablacarbus.R
-import fr.tuttifruty.blablacarbus.common.DelayedQueryTextListener
+import fr.tuttifruty.blablacarbus.common.DelayedTextWatcher
 import fr.tuttifruty.blablacarbus.common.Permission
 import fr.tuttifruty.blablacarbus.common.PermissionManager
 import fr.tuttifruty.blablacarbus.common.mvi.IView
@@ -50,14 +50,11 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
         binding.rvBusStops.adapter = adapterBusStops
         binding.rvBusStops.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.svSearchBus.setOnQueryTextListener(
-            DelayedQueryTextListener(
+        binding.svSearchBus.addTextChangedListener(
+            DelayedTextWatcher(
                 this@BusStopsFragment.lifecycle,
-                onDefaultQueryTextSubmit = {
-                    sendIntent(BusStopsIntent.RefreshBusStops(query = it, coordinates = lastFilter))
-                },
-                onDelayedQueryTextChange = {
-                    if (it.isNullOrEmpty()) {
+                onDelayedTextChanged = { query, _, _, _ ->
+                    if (query.isNullOrEmpty()) {
                         sendIntent(
                             BusStopsIntent.RefreshBusStops(
                                 query = null,
@@ -67,7 +64,7 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
                     } else {
                         sendIntent(
                             BusStopsIntent.RefreshBusStops(
-                                query = it,
+                                query = query.toString(),
                                 coordinates = lastFilter
                             )
                         )
@@ -181,11 +178,11 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
     private fun showProgress(isLoading: Boolean) {
         binding.apply {
             if (isLoading) {
-                vLoading.visibility = View.VISIBLE
-                progressBar.visibility = View.VISIBLE
+                loading.vLoading.visibility = View.VISIBLE
+                loading.progressBar.visibility = View.VISIBLE
             } else {
-                vLoading.visibility = View.GONE
-                progressBar.visibility = View.GONE
+                loading.vLoading.visibility = View.GONE
+                loading.progressBar.visibility = View.GONE
             }
         }
     }

@@ -15,18 +15,18 @@
             type="fr.tuttifruty.blablacarbus.ui.busstops.BusStopsViewModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_margin="4dp"
         app:cardElevation="4dp"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="64dp">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_bus_stop_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,5 +38,5 @@
                 tools:text="Bueno aires" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

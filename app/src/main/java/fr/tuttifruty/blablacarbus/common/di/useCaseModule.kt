@@ -21,4 +21,10 @@ val useCaseModule = module {
             busStopsLocalRepository = get(),
         )
     }
+
+    single<GetFaresForDestinationUseCase> {
+        GetFaresForDestinationUseCaseImpl(
+            busStopsRepository = get(),
+        )
+    }
 }

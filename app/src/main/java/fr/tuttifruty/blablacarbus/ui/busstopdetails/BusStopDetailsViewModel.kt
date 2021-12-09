@@ -10,6 +10,7 @@ import fr.tuttifruty.blablacarbus.common.mvi.IModel
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import fr.tuttifruty.blablacarbus.domain.usecase.GetAllBusStopsUseCase
 import fr.tuttifruty.blablacarbus.domain.usecase.GetBusStopUseCase
+import fr.tuttifruty.blablacarbus.domain.usecase.GetFaresForDestinationUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -18,7 +19,9 @@ import kotlinx.coroutines.launch
 class BusStopDetailsViewModel(
     private val getAllBusStopsUseCase: GetAllBusStopsUseCase,
     private val getBusStopUseCase: GetBusStopUseCase,
-) : ViewModel(), IModel<BusStopDetailsState, BusStopDetailsIntent, BusStopsNavigation> {
+    private val getFaresForDestinationUseCase: GetFaresForDestinationUseCase,
+    private val currentBusStopId: Int
+) : ViewModel(), IModel<BusStopDetailsState, BusStopDetailsIntent, BusStopDetailsNavigation> {
 
     override val intents: Channel<BusStopDetailsIntent> = Channel(Channel.UNLIMITED)
 
@@ -27,11 +30,14 @@ class BusStopDetailsViewModel(
     override val state: LiveData<BusStopDetailsState>
         get() = _state
 
-    private val _navigation = MutableLiveData<Event<BusStopsNavigation>>()
-    override val navigation: LiveData<Event<BusStopsNavigation>>
+    private val _navigation = MutableLiveData<Event<BusStopDetailsNavigation>>()
+    override val navigation: LiveData<Event<BusStopDetailsNavigation>>
         get() = _navigation
 
     init {
+        viewModelScope.launch {
+            fetchData()
+        }
         handlerIntent()
     }
 
@@ -40,35 +46,69 @@ class BusStopDetailsViewModel(
             intents.consumeAsFlow().collect { busStopsIntent ->
                 when (busStopsIntent) {
                     is BusStopDetailsIntent.ShowFaresForDestination -> {
-                        //TODO Call use case to calculte fare and show them
-                    }
-                    is BusStopDetailsIntent.ShowDetails -> {
-                        getBusStopUseCase(GetBusStopUseCase.Input(busStopsIntent.busStopId))
-                            .onSuccess {
-                                val busStop = it.busStop
-                                val busStopDestinationsIDs = it.busStop.destinations
-                                var listDestinations = emptyList<BusStopDomainModel>()
-
-                                getAllBusStopsUseCase(GetAllBusStopsUseCase.Input(listIDs = busStopDestinationsIDs))
-                                    .onSuccess { output ->
-                                        listDestinations = output.busStops
-                                    }
-
-                                updateState {
-                                    BusStopDetailsState.ShowBusStopDetails(
-                                        busStop,
-                                        listDestinations
-                                    )
-                                }
-                            }
-                            .onFailure {
-                                updateState { BusStopDetailsState.ShowError(R.string.generic_error) }
-                            }
-
+                        handleShowFaresForDestination(busStopsIntent)
                     }
                 }
             }
         }
+    }
+
+    private suspend fun fetchData() {
+        getBusStopUseCase(GetBusStopUseCase.Input(currentBusStopId))
+            .onSuccess {
+                val busStop = it.busStop
+                val busStopDestinationsIDs = it.busStop.destinations
+                var listDestinations = emptyList<BusStopDomainModel>()
+
+                getAllBusStopsUseCase(GetAllBusStopsUseCase.Input(listIDs = busStopDestinationsIDs))
+                    .onSuccess { output ->
+                        listDestinations = output.busStops
+                    }
+
+                updateState {
+                    BusStopDetailsState.ShowBusStopDetails(
+                        busStop,
+                        listDestinations
+                    )
+                }
+            }
+            .onFailure {
+                updateState { BusStopDetailsState.ShowError(R.string.generic_error) }
+            }
+    }
+
+    private suspend fun handleShowFaresForDestination(busStopsIntent: BusStopDetailsIntent.ShowFaresForDestination) {
+        updateState { BusStopDetailsState.Loading }
+        getFaresForDestinationUseCase(
+            GetFaresForDestinationUseCase.Input(
+                currentBusStopId,
+                busStopsIntent.destination.id
+            )
+        )
+            .onSuccess { output ->
+                _navigation.postValue(
+                    Event(
+                        BusStopDetailsNavigation.GoToFaresForDestination(
+                            output.fares.listOfFare
+                        )
+                    )
+                )
+            }
+            .onFailure {
+                when (it) {
+                    is GetFaresForDestinationUseCase.Errors.NoFares -> updateState {
+                        BusStopDetailsState.ShowError(
+                            R.string.no_fares
+                        )
+                    }
+                    else -> updateState {
+                        BusStopDetailsState.ShowError(
+                            R.string.generic_error
+                        )
+                    }
+
+                }
+            }
     }
 
     private suspend fun updateState(handler: suspend (intent: BusStopDetailsState) -> BusStopDetailsState) {

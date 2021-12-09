@@ -1,6 +1,7 @@
 package fr.tuttifruty.blablacarbus.domain.repository
 
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
+import fr.tuttifruty.blablacarbus.domain.model.FareDomainModel
 
 interface BusStopsRepository {
     /**
@@ -9,5 +10,10 @@ interface BusStopsRepository {
      *
      * @return List of BusStopDomainModel or null
      */
-    suspend fun getAllBusStops(): List<BusStopDomainModel>?
+    suspend fun getAllBusStops(): List<BusStopDomainModel>
+    suspend fun getAllFares(
+        originId: Int,
+        destinationId: Int,
+        startDate: String
+    ): List<FareDomainModel>
 }

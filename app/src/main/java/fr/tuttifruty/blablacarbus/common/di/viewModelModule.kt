@@ -6,6 +6,18 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { BusStopsViewModel(get(), get()) }
-    viewModel { BusStopDetailsViewModel(get(), get()) }
+    viewModel {
+        BusStopsViewModel(
+            getAllBusStopsUseCase = get(),
+            persistAllBusStopsUseCase = get()
+        )
+    }
+    viewModel { (currentBusStopId: Int) ->
+        BusStopDetailsViewModel(
+            getAllBusStopsUseCase = get(),
+            getBusStopUseCase = get(),
+            getFaresForDestinationUseCase = get(),
+            currentBusStopId = currentBusStopId
+        )
+    }
 }

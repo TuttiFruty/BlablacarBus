@@ -18,7 +18,7 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "URL", "\"https://bus-api.blablacar.com/v3/\""
-        buildConfigField "String", "API_KEY", "\"crtObqwLS_zfBjWs-nb_aQ\""
+        buildConfigField "String", "API_KEY", "\"zG0vgYAD3IFK8W_oHQDi9w\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

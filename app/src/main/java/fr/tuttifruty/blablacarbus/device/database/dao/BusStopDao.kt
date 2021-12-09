@@ -24,4 +24,7 @@ interface BusStopDao {
     @Query("SELECT * FROM bus_stop WHERE long_name LIKE '%' || :query || '%' OR short_name LIKE '%' || :query || '%' ORDER BY id ASC")
     suspend fun getAllBusStopByQuery(query: String?): List<BusStopDatabaseModel>
 
+    @Query("SELECT COUNT(*) FROM bus_stop")
+    suspend fun countAllBusStop(): Int
+
 }

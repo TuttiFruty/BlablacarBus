@@ -35,7 +35,6 @@ class BusStopsViewModel(
     init {
         handlerIntent()
         viewModelScope.launch {
-            updateState { BusStopsState.Loading }
             val result = persistAllBusStopsUseCase()
             if (result.isSuccess) {
                 fetchData()

@@ -7,20 +7,23 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import fr.tuttifruty.blablacarbus.R
 import fr.tuttifruty.blablacarbus.common.mvi.IView
 import fr.tuttifruty.blablacarbus.databinding.FragmentBusStopDetailsBinding
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 
 
 class BusStopDetailsFragment : Fragment(),
-    IView<BusStopDetailsState, BusStopDetailsIntent, BusStopsNavigation> {
+    IView<BusStopDetailsState, BusStopDetailsIntent, BusStopDetailsNavigation> {
     private lateinit var binding: FragmentBusStopDetailsBinding
-    val viewModel: BusStopDetailsViewModel by viewModel()
+    private lateinit var viewModel: BusStopDetailsViewModel
     private lateinit var adapterDestinations: DestinationsAdapter
     private val args: BusStopDetailsFragmentArgs by navArgs()
 
@@ -31,6 +34,10 @@ class BusStopDetailsFragment : Fragment(),
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_bus_stop_details, container, false)
+
+        viewModel = getViewModel {
+            parametersOf(args.busStopId)
+        }
 
         adapterDestinations =
             DestinationsAdapter(viewModel) { busStop ->
@@ -55,15 +62,13 @@ class BusStopDetailsFragment : Fragment(),
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        sendIntent(BusStopDetailsIntent.ShowDetails(args.busStopId))
-    }
-
     override fun render(state: BusStopDetailsState) {
         when (state) {
             BusStopDetailsState.Loading -> showProgress(true)
-            is BusStopDetailsState.ShowBusStopDetails -> initView(state.busStop, state.listDestinations)
+            is BusStopDetailsState.ShowBusStopDetails -> initView(
+                state.busStop,
+                state.listDestinations
+            )
             is BusStopDetailsState.ShowError -> showErrorMessage(state.message)
         }
     }
@@ -74,11 +79,21 @@ class BusStopDetailsFragment : Fragment(),
         }
     }
 
-    override fun navigateTo(navigation: BusStopsNavigation) {
-        //No-op
+    override fun navigateTo(navigation: BusStopDetailsNavigation) {
+        showProgress(false)
+        when (navigation) {
+            is BusStopDetailsNavigation.GoToFaresForDestination -> {
+                findNavController().navigate(
+                    BusStopDetailsFragmentDirections.actionBusStopDetailsFragmentToFaresDialogFragment(
+                        navigation.fares.toTypedArray()
+                    )
+                )
+            }
+        }
     }
 
     private fun initView(busStop: BusStopDomainModel, destinations: List<BusStopDomainModel>) {
+        showProgress(false)
         binding.apply {
             tvIdBusStop.text = "${busStop.id}"
             tvShortNameBusStop.text = busStop.shortName
@@ -93,11 +108,19 @@ class BusStopDetailsFragment : Fragment(),
     }
 
     private fun showProgress(isLoading: Boolean) {
-        //TODO when Fares use case implemented
+        binding.apply {
+            if (isLoading) {
+                loading.vLoading.visibility = View.VISIBLE
+                loading.progressBar.visibility = View.VISIBLE
+            } else {
+                loading.vLoading.visibility = View.GONE
+                loading.progressBar.visibility = View.GONE
+            }
+        }
     }
 
-
     private fun showErrorMessage(message: Int) {
-        //TODO when Fares use case implemented
+        showProgress(false)
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 }

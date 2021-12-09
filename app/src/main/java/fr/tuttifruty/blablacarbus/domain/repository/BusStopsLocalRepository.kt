@@ -12,5 +12,6 @@ interface BusStopsLocalRepository {
     suspend fun getAllBusStops(query: String?): List<BusStopDomainModel>
     suspend fun getAllBusStopsByListIDs(listsIDs : List<Int>): List<BusStopDomainModel>
     suspend fun persistAllBusStops(busStops: List<BusStopDomainModel>)
-    suspend fun getBusStopByID(busStopID : Int) : BusStopDomainModel?
+    suspend fun getBusStopByID(busStopID: Int): BusStopDomainModel?
+    suspend fun countAllBusStops(): Int
 }

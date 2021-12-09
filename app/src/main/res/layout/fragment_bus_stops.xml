@@ -21,34 +21,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/sv_search_bus"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_search_bus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    app:iconifiedByDefault="false"
+                    android:hint="@string/search_hint"
+                    app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/ic_search_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/cb_filter_gps"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:queryHint="@string/search_hint" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/sv_search_bus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/cb_filter_gps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
                     android:button="@drawable/checkbox_selector"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/sv_search_bus"
+                    android:buttonTint="@color/inchworm"
+                    app:layout_constraintBottom_toBottomOf="@id/ti_search_bus"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/sv_search_bus"
-                    app:layout_constraintTop_toTopOf="@id/sv_search_bus" />
+                    app:layout_constraintStart_toEndOf="@+id/ti_search_bus"
+                    app:layout_constraintTop_toTopOf="@id/ti_search_bus" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -59,33 +65,9 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/component_bus_stop_line" />
 
-            <View
-                android:id="@+id/v_loading"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:alpha="0.6"
-                android:background="@color/white"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/extra_large_margin"
-                android:visibility="gone"
-                android:indeterminate="true"
-                app:trackCornerRadius="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
+            <include
+                android:id="@+id/loading"
+                layout="@layout/loading_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

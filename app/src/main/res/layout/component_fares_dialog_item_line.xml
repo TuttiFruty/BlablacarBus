@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_departure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{String.format(@string/departure,item.departure)}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_arrival"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Départ : 22-01-2022" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_arrival"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/little_margin"
+            android:text="@{String.format(@string/arrival,item.arrival)}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_cost_label"
+            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
+            app:layout_constraintStart_toStartOf="@+id/tv_departure"
+            app:layout_constraintTop_toBottomOf="@+id/tv_departure"
+            tools:text="Arrivé : 24-01-2022" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_cost_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/little_margin"
+            android:text="@{String.format(@string/cost, item.cost, item.currency)}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_first_bus_label"
+            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
+            app:layout_constraintStart_toStartOf="@+id/tv_arrival"
+            app:layout_constraintTop_toBottomOf="@+id/tv_arrival"
+            tools:text="Coût : 30 EUR" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_first_bus_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/little_margin"
+            android:layout_marginBottom="8dp"
+            android:text="@{String.format(@string/first_bus, item.firstBusNumber)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
+            app:layout_constraintStart_toStartOf="@+id/tv_cost_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cost_label"
+            tools:text="Bus de départ : 1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="fr.tuttifruty.blablacarbus.domain.model.FareDomainModel" />
+
+        <variable
+            name="viewModel"
+            type="androidx.lifecycle.ViewModel" />
+    </data>
+</layout>

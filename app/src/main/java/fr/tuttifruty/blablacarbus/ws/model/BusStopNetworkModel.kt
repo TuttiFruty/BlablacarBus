@@ -26,7 +26,7 @@ data class BusStopNetworkModel(
     @Json(name = "destinations_ids") val destinationsIDS: List<Int>,
     @Json(name = "is_meta_gare") val isMetaGare: Boolean,
     val address: String?,
-    val stops: List<BusStopNetworkModel>?
+    val stops: List<BusStopNetworkModel>?,
 ) {
 
     fun initFromLatAndLong() : Location{
