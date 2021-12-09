@@ -1,9 +1,9 @@
-package fr.tuttifruty.blablacarbus.data.repository
+package fr.tuttifruty.blablacarbus.ws.repository
 
-import fr.tuttifruty.blablacarbus.data.model.asDomainModel
-import fr.tuttifruty.blablacarbus.data.service.BlablacarBusApi
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import fr.tuttifruty.blablacarbus.domain.repository.BusStopsRepository
+import fr.tuttifruty.blablacarbus.ws.model.asDomainModel
+import fr.tuttifruty.blablacarbus.ws.service.BlablacarBusApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,13 +14,10 @@ class BusStopsRepositoryImpl(
 ) : BusStopsRepository {
     override suspend fun getAllBusStops(): List<BusStopDomainModel>? {
         return withContext(dispatcher) {
-            val result = blablacarBusApi.getAllStops()
+            blablacarBusApi.getAllStops()
                 .body()
                 ?.stops
-
-            //TODO Add Database persistence so we don't call API multiple times as specified in the API documentation
-            // At most once per day, at least once per month
-            result?.map { it.asDomainModel(result) }
+                ?.map { it.asDomainModel() }
         }
     }
 }

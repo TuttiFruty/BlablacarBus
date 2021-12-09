@@ -9,16 +9,21 @@ import fr.tuttifruty.blablacarbus.common.Event
 import fr.tuttifruty.blablacarbus.common.mvi.IModel
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import fr.tuttifruty.blablacarbus.domain.usecase.GetAllBusStopsUseCase
+import fr.tuttifruty.blablacarbus.domain.usecase.GetBusStopUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-class BusStopDetailsViewModel() : ViewModel(), IModel<BusStopDetailsState, BusStopDetailsIntent, BusStopsNavigation> {
+class BusStopDetailsViewModel(
+    private val getAllBusStopsUseCase: GetAllBusStopsUseCase,
+    private val getBusStopUseCase: GetBusStopUseCase,
+) : ViewModel(), IModel<BusStopDetailsState, BusStopDetailsIntent, BusStopsNavigation> {
 
     override val intents: Channel<BusStopDetailsIntent> = Channel(Channel.UNLIMITED)
 
-    private val _state = MutableLiveData<BusStopDetailsState>().apply { value = BusStopDetailsState.Loading }
+    private val _state =
+        MutableLiveData<BusStopDetailsState>().apply { value = BusStopDetailsState.Loading }
     override val state: LiveData<BusStopDetailsState>
         get() = _state
 
@@ -38,7 +43,28 @@ class BusStopDetailsViewModel() : ViewModel(), IModel<BusStopDetailsState, BusSt
                         //TODO Call use case to calculte fare and show them
                     }
                     is BusStopDetailsIntent.ShowDetails -> {
-                        updateState { BusStopDetailsState.ShowBusStopDetails(busStopsIntent.busStop) }
+                        getBusStopUseCase(GetBusStopUseCase.Input(busStopsIntent.busStopId))
+                            .onSuccess {
+                                val busStop = it.busStop
+                                val busStopDestinationsIDs = it.busStop.destinations
+                                var listDestinations = emptyList<BusStopDomainModel>()
+
+                                getAllBusStopsUseCase(GetAllBusStopsUseCase.Input(listIDs = busStopDestinationsIDs))
+                                    .onSuccess { output ->
+                                        listDestinations = output.busStops
+                                    }
+
+                                updateState {
+                                    BusStopDetailsState.ShowBusStopDetails(
+                                        busStop,
+                                        listDestinations
+                                    )
+                                }
+                            }
+                            .onFailure {
+                                updateState { BusStopDetailsState.ShowError(R.string.generic_error) }
+                            }
+
                     }
                 }
             }

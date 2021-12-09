@@ -6,14 +6,15 @@ import fr.tuttifruty.blablacarbus.common.mvi.IState
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 
 sealed class BusStopDetailsIntent : IIntent {
-    class ShowDetails(val busStop: BusStopDomainModel) : BusStopDetailsIntent()
+    class ShowDetails(val busStopId: Int) : BusStopDetailsIntent()
     class ShowFaresForDestination(val destination: BusStopDomainModel) : BusStopDetailsIntent()
 }
 
 sealed class BusStopsNavigation : INavigation
 
 sealed class BusStopDetailsState : IState {
-    data class ShowBusStopDetails(val busStop : BusStopDomainModel) : BusStopDetailsState()
+    data class ShowBusStopDetails(val busStop : BusStopDomainModel, val listDestinations: List<BusStopDomainModel>) : BusStopDetailsState()
+
     data class ShowError(val message: Int) : BusStopDetailsState()
     object Loading : BusStopDetailsState()
 }

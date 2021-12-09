@@ -1,6 +1,6 @@
-package fr.tuttifruty.blablacarbus.data.service
+package fr.tuttifruty.blablacarbus.ws.service
 
-import fr.tuttifruty.blablacarbus.data.model.StopsResponseNetworkModel
+import fr.tuttifruty.blablacarbus.ws.model.StopsResponseNetworkModel
 import retrofit2.Response
 import retrofit2.http.GET
 

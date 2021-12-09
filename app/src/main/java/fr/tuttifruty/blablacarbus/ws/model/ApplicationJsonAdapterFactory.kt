@@ -1,4 +1,4 @@
-package fr.tuttifruty.blablacarbus.data.model
+package fr.tuttifruty.blablacarbus.ws.model
 
 import com.squareup.moshi.JsonAdapter
 import se.ansman.kotshi.KotshiJsonAdapterFactory

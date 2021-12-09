@@ -1,4 +1,4 @@
-package fr.tuttifruty.blablacarbus.data.model
+package fr.tuttifruty.blablacarbus.ws.model
 
 import se.ansman.kotshi.JsonSerializable
 

@@ -57,15 +57,13 @@ class BusStopDetailsFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        args.busStop?.let {
-            sendIntent(BusStopDetailsIntent.ShowDetails(it))
-        }
+        sendIntent(BusStopDetailsIntent.ShowDetails(args.busStopId))
     }
 
     override fun render(state: BusStopDetailsState) {
         when (state) {
             BusStopDetailsState.Loading -> showProgress(true)
-            is BusStopDetailsState.ShowBusStopDetails -> initView(state.busStop)
+            is BusStopDetailsState.ShowBusStopDetails -> initView(state.busStop, state.listDestinations)
             is BusStopDetailsState.ShowError -> showErrorMessage(state.message)
         }
     }
@@ -80,18 +78,18 @@ class BusStopDetailsFragment : Fragment(),
         //No-op
     }
 
-    private fun initView(busStop: BusStopDomainModel) {
+    private fun initView(busStop: BusStopDomainModel, destinations: List<BusStopDomainModel>) {
         binding.apply {
             tvIdBusStop.text = "${busStop.id}"
             tvShortNameBusStop.text = busStop.shortName
             tvLongNameBusStop.text = busStop.longName
             tvTimeZoneBusStop.text = busStop.timeZone
-            tvLatitudeValueBusStop.text = busStop.latitude
-            tvLongitudeValueBusStop.text = busStop.longitude
+            tvLatitudeValueBusStop.text = busStop.location.latitude.toString()
+            tvLongitudeValueBusStop.text = busStop.location.longitude.toString()
             tvAdressValueBusStop.text = busStop.address
         }
 
-        adapterDestinations.submitList(busStop.destinations)
+        adapterDestinations.submitList(destinations)
     }
 
     private fun showProgress(isLoading: Boolean) {

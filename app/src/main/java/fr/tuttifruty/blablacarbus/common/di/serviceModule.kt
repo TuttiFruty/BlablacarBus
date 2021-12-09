@@ -3,8 +3,8 @@ package fr.tuttifruty.blablacarbus.common.di
 import android.os.Build
 import com.squareup.moshi.Moshi
 import fr.tuttifruty.blablacarbus.BuildConfig
-import fr.tuttifruty.blablacarbus.data.model.KotshiApplicationJsonAdapterFactory
-import fr.tuttifruty.blablacarbus.data.service.BlablacarBusApi
+import fr.tuttifruty.blablacarbus.ws.model.KotshiApplicationJsonAdapterFactory
+import fr.tuttifruty.blablacarbus.ws.service.BlablacarBusApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

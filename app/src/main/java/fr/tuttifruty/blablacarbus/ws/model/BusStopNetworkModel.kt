@@ -1,5 +1,6 @@
-package fr.tuttifruty.blablacarbus.data.model
+package fr.tuttifruty.blablacarbus.ws.model
 
+import android.location.Location
 import com.squareup.moshi.Json
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import se.ansman.kotshi.JsonSerializable
@@ -27,31 +28,41 @@ data class BusStopNetworkModel(
     val address: String?,
     val stops: List<BusStopNetworkModel>?
 ) {
-    /**
-     * Transform list of destination IDs (Int) into BusStopDomainModel
-     */
-    fun initDestinationFromBusStopList(busStops: List<BusStopNetworkModel>?): List<BusStopDomainModel> {
-        return if (busStops != null) {
-            this.destinationsIDS.mapNotNull { destinationsID ->
-                busStops.find { destinationsID == it.id }?.asDomainModel()
-            }
-        } else {
-            emptyList()
+
+    fun initFromLatAndLong() : Location{
+        val location = Location("")
+        location.latitude = getLatitudeAsDouble()
+        location.longitude = getLongitudeAsDouble()
+        return location
+    }
+
+    private fun getLatitudeAsDouble() : Double{
+        return try {
+            this.latitude.toDouble()
+        }catch (e : NumberFormatException){
+            0.0
+        }
+    }
+
+    private fun getLongitudeAsDouble() : Double{
+        return try {
+            this.longitude.toDouble()
+        }catch (e : NumberFormatException){
+            0.0
         }
     }
 }
 
-fun BusStopNetworkModel.asDomainModel(busStops: List<BusStopNetworkModel>? = null): BusStopDomainModel {
+fun BusStopNetworkModel.asDomainModel(): BusStopDomainModel {
     return BusStopDomainModel(
         id = this.id,
         shortName = this.shortName,
         longName = this.longName,
-        latitude = this.latitude,
-        longitude = this.longitude,
+        location = initFromLatAndLong(),
         timeZone = this.timeZone,
-        destinations = initDestinationFromBusStopList(busStops),
+        destinations = destinationsIDS,
         isMetaGare = this.isMetaGare,
         address = address?:"",
-        stops = this.stops?.map { it.asDomainModel() } ?: emptyList()
+        stops = this.stops?.map { it.id } ?: emptyList()
     )
 }

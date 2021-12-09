@@ -8,4 +8,12 @@
     <string name="destinations">"Destinations : "</string>
     <string name="stop_bus">Arrêt de bus</string>
     <string name="bus_stop_details">Details de l\'arrêt de bus</string>
+    <string name="search_hint">Rechercher un arrêt</string>
+    <string name="filter_gps">Filtrer via position</string>
+    <string name="dialog_permission_title">Permissions nécessaire</string>
+    <string name="dialog_permission_default_message">Nous avons besoin de votre permission pour certaine fonctionalité</string>
+    <string name="dialog_permission_button_positive">J\'accepte</string>
+    <string name="location_permission_denied">Vous n\'avez pas accepter la permission de géolocalisation</string>
+    <string name="retry">Réessayer</string>
+    <string name="location_permission_needed">Pour pouvoir trier les arrêts selon votre géolocalisation, nous avons besoin de votre permissions pour accéder à votre emplacement.</string>
 </resources>
