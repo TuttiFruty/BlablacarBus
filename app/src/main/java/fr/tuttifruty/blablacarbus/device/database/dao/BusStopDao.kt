@@ -18,7 +18,7 @@ interface BusStopDao {
     @Query("SELECT * FROM bus_stop ORDER BY id ASC")
     suspend fun getAllBusStop(): List<BusStopDatabaseModel>
 
-    @Query("SELECT * FROM bus_stop WHERE id IN (:listsIDs)")
+    @Query("SELECT * FROM bus_stop WHERE id IN (:listsIDs) ORDER BY id ASC")
     suspend fun getAllBusStopByIds(listsIDs: List<Int>): List<BusStopDatabaseModel>
 
     @Query("SELECT * FROM bus_stop WHERE long_name LIKE '%' || :query || '%' OR short_name LIKE '%' || :query || '%' ORDER BY id ASC")

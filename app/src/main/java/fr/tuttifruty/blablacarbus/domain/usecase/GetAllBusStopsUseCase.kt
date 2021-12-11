@@ -4,7 +4,8 @@ import android.location.Location
 import fr.tuttifruty.blablacarbus.domain.UseCase
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
 import fr.tuttifruty.blablacarbus.domain.repository.BusStopsLocalRepository
-import fr.tuttifruty.blablacarbus.domain.usecase.GetAllBusStopsUseCase.*
+import fr.tuttifruty.blablacarbus.domain.usecase.GetAllBusStopsUseCase.Input
+import fr.tuttifruty.blablacarbus.domain.usecase.GetAllBusStopsUseCase.Output
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -38,7 +39,8 @@ class GetAllBusStopsUseCaseImpl(
     override suspend fun invoke(input: Input?): Result<Output> {
         return withContext(dispatcher) {
             if (input?.listIDs != null) {
-                val busStops = busStopsLocalRepository.getAllBusStopsByListIDs(input.listIDs)
+                val busStops =
+                    busStopsLocalRepository.getAllBusStopsByListIDs(input.listIDs, input.query)
                 Result.success(Output(busStops))
             } else {
                 val busStops = busStopsLocalRepository.getAllBusStops(input?.query)

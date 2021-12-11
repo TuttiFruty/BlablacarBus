@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import fr.tuttifruty.blablacarbus.R
-import fr.tuttifruty.blablacarbus.common.CustomDividerItemDecoration
 import fr.tuttifruty.blablacarbus.databinding.FragmentFaresDialogBinding
 
 class FaresDialogFragment : BottomSheetDialogFragment() {
@@ -31,7 +29,6 @@ class FaresDialogFragment : BottomSheetDialogFragment() {
         binding.rvFaresList.apply {
             adapter = faresAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(CustomDividerItemDecoration(requireContext(), R.drawable.divider))
         }
 
         faresAdapter.submitList(args.fares.asList())

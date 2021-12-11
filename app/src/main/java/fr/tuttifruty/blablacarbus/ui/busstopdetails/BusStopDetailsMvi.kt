@@ -8,6 +8,7 @@ import fr.tuttifruty.blablacarbus.domain.model.FareDomainModel
 
 sealed class BusStopDetailsIntent : IIntent {
     class ShowFaresForDestination(val destination: BusStopDomainModel) : BusStopDetailsIntent()
+    class FilterDestination(val query: String? = null) : BusStopDetailsIntent()
 }
 
 sealed class BusStopDetailsNavigation : INavigation {

@@ -2,9 +2,11 @@
 <resources>
     <color name="spiro_disco_ball">#2DBEFF</color>
     <color name="olympic_blue">#008ecc</color>
+    <color name="alice_blue">#E9F8FF</color>
     <color name="inchworm">#9EF769</color>
     <color name="midnight_green">#054752</color>
     <color name="dusk_green">#3d737e</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#D8D8D8</color>
 </resources>

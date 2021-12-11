@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import fr.tuttifruty.blablacarbus.R
+import fr.tuttifruty.blablacarbus.common.DelayedTextWatcher
 import fr.tuttifruty.blablacarbus.common.mvi.IView
 import fr.tuttifruty.blablacarbus.databinding.FragmentBusStopDetailsBinding
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
@@ -26,7 +28,6 @@ class BusStopDetailsFragment : Fragment(),
     private lateinit var viewModel: BusStopDetailsViewModel
     private lateinit var adapterDestinations: DestinationsAdapter
     private val args: BusStopDetailsFragmentArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +45,27 @@ class BusStopDetailsFragment : Fragment(),
                 sendIntent(BusStopDetailsIntent.ShowFaresForDestination(busStop))
             }
         binding.rvBusStopDestinations.adapter = adapterDestinations
-        binding.rvBusStopDestinations.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.rvBusStopDestinations.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.svSearchBus.addTextChangedListener(
+            DelayedTextWatcher(
+                this@BusStopDetailsFragment.lifecycle,
+                onDelayedTextChanged = { query, _, _, _ ->
+                    if (query.isNullOrEmpty()) {
+                        sendIntent(
+                            BusStopDetailsIntent.FilterDestination(
+                                query = null,
+                            )
+                        )
+                    } else {
+                        sendIntent(
+                            BusStopDetailsIntent.FilterDestination(
+                                query = query.toString(),
+                            )
+                        )
+                    }
+                })
+        )
 
         viewModel.state.observe(
             viewLifecycleOwner, { busStopsState ->
@@ -95,8 +116,10 @@ class BusStopDetailsFragment : Fragment(),
     private fun initView(busStop: BusStopDomainModel, destinations: List<BusStopDomainModel>) {
         showProgress(false)
         binding.apply {
+            val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+            actionBar?.title = busStop.longName
+
             tvIdBusStop.text = "${busStop.id}"
-            tvShortNameBusStop.text = busStop.shortName
             tvLongNameBusStop.text = busStop.longName
             tvTimeZoneBusStop.text = busStop.timeZone
             tvLatitudeValueBusStop.text = busStop.location.latitude.toString()

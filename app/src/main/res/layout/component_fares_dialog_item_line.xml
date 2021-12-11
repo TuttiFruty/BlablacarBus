@@ -5,59 +5,102 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/little_margin"
+        android:layout_marginBottom="@dimen/little_margin"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:background="@drawable/custom_background_stroked_primary">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_departure_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/little_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:text="@string/departure"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Départ : " />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_departure"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{String.format(@string/departure,item.departure)}"
-            app:layout_constraintBottom_toTopOf="@+id/tv_arrival"
+            android:text="@{item.departure}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_departure_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Départ : 22-01-2022" />
+            app:layout_constraintStart_toEndOf="@id/tv_departure_label"
+            app:layout_constraintTop_toTopOf="@id/tv_departure_label"
+            tools:text="22-01-2022" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_arrival_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/arrival"
+            app:layout_constraintStart_toStartOf="@+id/tv_departure_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_departure_label"
+            tools:text="Arrivé : " />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_arrival"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/little_margin"
-            android:text="@{String.format(@string/arrival,item.arrival)}"
-            app:layout_constraintBottom_toTopOf="@+id/tv_cost_label"
-            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
-            app:layout_constraintStart_toStartOf="@+id/tv_departure"
-            app:layout_constraintTop_toBottomOf="@+id/tv_departure"
-            tools:text="Arrivé : 24-01-2022" />
+            android:text="@{item.arrival}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_arrival_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_arrival_label"
+            app:layout_constraintTop_toTopOf="@id/tv_arrival_label"
+            tools:text="24-01-2022" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_cost_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/little_margin"
-            android:text="@{String.format(@string/cost, item.cost, item.currency)}"
-            app:layout_constraintBottom_toTopOf="@+id/tv_first_bus_label"
-            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
-            app:layout_constraintStart_toStartOf="@+id/tv_arrival"
-            app:layout_constraintTop_toBottomOf="@+id/tv_arrival"
-            tools:text="Coût : 30 EUR" />
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:text="@string/cost"
+            app:layout_constraintStart_toStartOf="@+id/tv_departure_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_arrival_label"
+            tools:text="Coût : " />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_cost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{String.format(@string/cost_value, item.cost, item.currency)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_cost_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_cost_label"
+            app:layout_constraintTop_toTopOf="@id/tv_cost_label"
+            tools:text="30 EUR" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_first_bus_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/little_margin"
+            android:textStyle="bold"
             android:layout_marginBottom="8dp"
-            android:text="@{String.format(@string/first_bus, item.firstBusNumber)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_departure"
-            app:layout_constraintStart_toStartOf="@+id/tv_cost_label"
+            android:text="@string/first_bus"
+            app:layout_constraintStart_toStartOf="@+id/tv_departure_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_cost_label"
-            tools:text="Bus de départ : 1" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Bus de départ : " />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_first_bus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.firstBusNumber}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_first_bus_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_first_bus_label"
+            app:layout_constraintTop_toTopOf="@id/tv_first_bus_label"
+            tools:text="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

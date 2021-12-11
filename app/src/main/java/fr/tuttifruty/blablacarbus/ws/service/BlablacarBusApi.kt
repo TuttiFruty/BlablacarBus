@@ -14,6 +14,5 @@ interface BlablacarBusApi {
     suspend fun getFares(
         @Query("origin_id") originId: Int,
         @Query("destination_id") destinationId: Int,
-        @Query("start_date") startDate: String
     ): Response<FaresResponseNetworkModel>
 }

@@ -11,123 +11,198 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_id_bus_stop"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/large_margin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="1" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_short_name_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/little_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_id_bus_stop"
-                app:layout_constraintStart_toEndOf="@+id/tv_id_bus_stop"
-                app:layout_constraintTop_toTopOf="@+id/tv_id_bus_stop"
-                tools:text="Boulou" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_long_name_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/little_margin"
-                app:layout_constraintStart_toStartOf="@+id/tv_short_name_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_short_name_bus_stop"
-                tools:text="Boulou de la case boulou" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_time_zone_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/little_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_long_name_bus_stop"
-                app:layout_constraintStart_toEndOf="@+id/tv_long_name_bus_stop"
-                app:layout_constraintTop_toTopOf="@+id/tv_long_name_bus_stop"
-                tools:text="Europe/Paris" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_latitude_label_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/little_margin"
-                android:text="@string/latitude"
-                app:layout_constraintStart_toStartOf="@+id/tv_long_name_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_long_name_bus_stop" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_latitude_value_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/little_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_latitude_label_bus_stop"
-                app:layout_constraintStart_toEndOf="@+id/tv_latitude_label_bus_stop"
-                app:layout_constraintTop_toTopOf="@+id/tv_latitude_label_bus_stop"
-                tools:text="43.49484" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_longitude_label_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/little_margin"
-                android:text="@string/longitude"
-                app:layout_constraintStart_toStartOf="@+id/tv_latitude_label_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_latitude_label_bus_stop" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_longitude_value_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/little_margin"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_longitude_label_bus_stop"
-                app:layout_constraintStart_toEndOf="@+id/tv_longitude_label_bus_stop"
-                app:layout_constraintTop_toTopOf="@+id/tv_longitude_label_bus_stop"
-                app:layout_constraintVertical_bias="1.0"
-                tools:text="43.49484" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_adress_label_bus_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/little_margin"
-                android:text="@string/adress"
-                app:layout_constraintStart_toStartOf="@+id/tv_longitude_label_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_longitude_label_bus_stop" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_adress_value_bus_stop"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/little_margin"
-                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_background_rounded_alice_blue"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_adress_label_bus_stop"
-                app:layout_constraintTop_toTopOf="@+id/tv_adress_label_bus_stop"
-                app:layout_constraintVertical_bias="1.0"
-                tools:text="101 Rue de la voiture " />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_id_bus_stop_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/medium_margin"
+                    android:text="@string/stop_bus_label"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_id_bus_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/little_margin"
+                    app:layout_constraintStart_toEndOf="@id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toTopOf="@id/tv_id_bus_stop_label"
+                    tools:text="1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_long_name_bus_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/little_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_id_bus_stop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_id_bus_stop"
+                    app:layout_constraintTop_toTopOf="@+id/tv_id_bus_stop"
+                    tools:text="Boulou" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_adress_label_bus_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/little_margin"
+                    android:text="@string/adress"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_id_bus_stop_label" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_adress_value_bus_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_long_name_bus_stop"
+                    app:layout_constraintStart_toStartOf="@+id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_adress_label_bus_stop"
+                    tools:text="101 Rue de la voiture " />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_timezone_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/little_margin"
+                    android:text="@string/timezone"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_adress_value_bus_stop" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_time_zone_bus_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/little_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_timezone_label"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_long_name_bus_stop"
+                    app:layout_constraintStart_toEndOf="@+id/tv_timezone_label"
+                    app:layout_constraintTop_toTopOf="@+id/tv_timezone_label"
+                    tools:text="Europe/Paris" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_latitude_label_bus_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/little_margin"
+                    android:text="@string/latitude"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_timezone_label" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_latitude_value_bus_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/little_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_latitude_label_bus_stop"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_long_name_bus_stop"
+                    app:layout_constraintStart_toEndOf="@+id/tv_latitude_label_bus_stop"
+                    app:layout_constraintTop_toTopOf="@+id/tv_latitude_label_bus_stop"
+                    tools:text="43.49484" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_longitude_label_bus_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/little_margin"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:text="@string/longitude"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_id_bus_stop_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_latitude_label_bus_stop" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_longitude_value_bus_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/little_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_longitude_label_bus_stop"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_long_name_bus_stop"
+                    app:layout_constraintStart_toEndOf="@+id/tv_longitude_label_bus_stop"
+                    app:layout_constraintTop_toTopOf="@+id/tv_longitude_label_bus_stop"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="43.49484" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/v_start_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/large_margin"
+                android:background="@color/grey"
+                app:layout_constraintTop_toBottomOf="@id/cl_details"
+                app:layout_constraintStart_toStartOf="@id/cl_details"
+                app:layout_constraintEnd_toEndOf="@id/cl_details" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_destinations_label_bus_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/little_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:text="@string/destinations"
-                app:layout_constraintStart_toStartOf="@+id/tv_adress_label_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_adress_value_bus_stop" />
+                app:layout_constraintEnd_toEndOf="@+id/cl_details"
+                app:layout_constraintStart_toStartOf="@+id/cl_details"
+                app:layout_constraintTop_toBottomOf="@+id/v_start_divider" />
+
+            <View
+                android:id="@+id/v_end_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="@color/grey"
+                app:layout_constraintTop_toBottomOf="@id/tv_destinations_label_bus_stop"
+                app:layout_constraintStart_toStartOf="@id/cl_details"
+                app:layout_constraintEnd_toEndOf="@id/cl_details" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_search_bus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:hint="@string/search_hint"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="@+id/cl_details"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/cl_details"
+                app:layout_constraintTop_toBottomOf="@+id/v_end_divider"
+                app:startIconDrawable="@drawable/ic_search_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sv_search_bus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_bus_stop_destinations"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/little_margin"
-                android:layout_marginBottom="?actionBarSize"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/large_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_destinations_label_bus_stop"
-                app:layout_constraintTop_toBottomOf="@+id/tv_destinations_label_bus_stop"
-                tools:listitem="@layout/component_bus_stop_line" />
+                app:layout_constraintEnd_toEndOf="@+id/cl_details"
+                app:layout_constraintStart_toStartOf="@+id/cl_details"
+                app:layout_constraintTop_toBottomOf="@+id/ti_search_bus"
+                tools:listitem="@layout/component_destination_line" />
 
             <include
                 android:id="@+id/loading"

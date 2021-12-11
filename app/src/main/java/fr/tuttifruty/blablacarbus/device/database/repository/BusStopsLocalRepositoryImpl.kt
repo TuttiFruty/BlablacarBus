@@ -23,9 +23,18 @@ class BusStopsLocalRepositoryImpl(
         }
     }
 
-    override suspend fun getAllBusStopsByListIDs(listsIDs: List<Int>): List<BusStopDomainModel> {
+    override suspend fun getAllBusStopsByListIDs(
+        listsIDs: List<Int>,
+        query: String?
+    ): List<BusStopDomainModel> {
         return withContext(dispatcher) {
-            dao.getAllBusStopByIds(listsIDs).map { it.asDomainModel() }
+            dao.getAllBusStopByIds(listsIDs).map { it.asDomainModel() }.filter {
+                if (query != null) {
+                    it.longName.contains(query, true) || it.shortName.contains(query, true)
+                } else {
+                    true
+                }
+            }
         }
     }
 

@@ -5,8 +5,9 @@
     <string name="latitude">Latitude : </string>
     <string name="longitude">Longitude : </string>
     <string name="adress">"Adresse : "</string>
-    <string name="destinations">"Destinations : "</string>
-    <string name="stop_bus">Arrêt de bus</string>
+    <string name="destinations">"Destinations"</string>
+    <string name="stop_bus">Départ</string>
+    <string name="stop_bus_label">Arrêt de bus : </string>
     <string name="bus_stop_details">Details de l\'arrêt de bus</string>
     <string name="search_hint">Rechercher un arrêt</string>
     <string name="filter_gps">Filtrer via position</string>
@@ -17,10 +18,12 @@
     <string name="retry">Réessayer</string>
     <string name="location_permission_needed">Pour pouvoir trier les arrêts selon votre géolocalisation, nous avons besoin de votre permissions pour accéder à votre emplacement.</string>
     <string name="fares">Coût du trajet</string>
-    <string name="cost">Coût : %d %s</string>
-    <string name="first_bus">Bus de départ : %s</string>
+    <string name="cost">Coût :  </string>
+    <string name="cost_value">%d %s</string>
+    <string name="first_bus">Bus de départ :  </string>
     <string name="id_bus">Id : %d</string>
-    <string name="departure">Départ : %s</string>
-    <string name="arrival">Arrivé : %s</string>
+    <string name="departure">Départ :  </string>
+    <string name="arrival">Arrivé :  </string>
     <string name="no_fares">Aucun résultat trouvé pour ce trajet</string>
+    <string name="timezone">Fuseaux horaires : </string>
 </resources>

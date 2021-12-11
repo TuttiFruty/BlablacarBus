@@ -32,7 +32,7 @@ class BusStopsRepositoryImpl(
             val result = blablacarBusApi.getFares(
                 originId = originId,
                 destinationId = destinationId,
-                startDate = startDate
+                //startDate = startDate -> Seems to be the cause of the 500 error
             )
                 .body()
                 ?.fares

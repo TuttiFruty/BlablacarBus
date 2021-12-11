@@ -48,19 +48,25 @@ class BusStopDetailsViewModel(
                     is BusStopDetailsIntent.ShowFaresForDestination -> {
                         handleShowFaresForDestination(busStopsIntent)
                     }
+                    is BusStopDetailsIntent.FilterDestination -> fetchData(busStopsIntent.query)
                 }
             }
         }
     }
 
-    private suspend fun fetchData() {
+    private suspend fun fetchData(query: String? = null) {
         getBusStopUseCase(GetBusStopUseCase.Input(currentBusStopId))
             .onSuccess {
                 val busStop = it.busStop
                 val busStopDestinationsIDs = it.busStop.destinations
                 var listDestinations = emptyList<BusStopDomainModel>()
 
-                getAllBusStopsUseCase(GetAllBusStopsUseCase.Input(listIDs = busStopDestinationsIDs))
+                getAllBusStopsUseCase(
+                    GetAllBusStopsUseCase.Input(
+                        listIDs = busStopDestinationsIDs,
+                        query = query
+                    )
+                )
                     .onSuccess { output ->
                         listDestinations = output.busStops
                     }
