@@ -1,10 +1,9 @@
 package fr.tuttifruty.blablacarbus.ui.busstopdetails
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import fr.tuttifruty.blablacarbus.R
-import fr.tuttifruty.blablacarbus.common.DelayedTextWatcher
+import fr.tuttifruty.blablacarbus.common.DelayedQueryTextListener
 import fr.tuttifruty.blablacarbus.common.mvi.IView
 import fr.tuttifruty.blablacarbus.databinding.FragmentBusStopDetailsBinding
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
@@ -28,6 +27,48 @@ class BusStopDetailsFragment : Fragment(),
     private lateinit var viewModel: BusStopDetailsViewModel
     private lateinit var adapterDestinations: DestinationsAdapter
     private val args: BusStopDetailsFragmentArgs by navArgs()
+    private var lastName: String? = null
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.bottom_navigation_menu_details, menu)
+
+        initSearch(menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+
+    }
+
+    private fun initSearch(menu: Menu) {
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(
+            DelayedQueryTextListener(
+                this@BusStopDetailsFragment.lifecycle,
+                onDefaultQueryTextSubmit = {
+                    sendIntent(
+                        BusStopDetailsIntent.FilterDestination(
+                            query = it.toString(),
+                        )
+                    )
+                },
+                onDelayedQueryTextChange = {
+                    if (it.isNullOrEmpty()) {
+                        sendIntent(
+                            BusStopDetailsIntent.FilterDestination(
+                                query = null,
+                            )
+                        )
+                    } else {
+                        sendIntent(
+                            BusStopDetailsIntent.FilterDestination(
+                                query = it.toString(),
+                            )
+                        )
+                    }
+                })
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +76,8 @@ class BusStopDetailsFragment : Fragment(),
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_bus_stop_details, container, false)
+
+        setHasOptionsMenu(true)
 
         viewModel = getViewModel {
             parametersOf(args.busStopId)
@@ -46,26 +89,6 @@ class BusStopDetailsFragment : Fragment(),
             }
         binding.rvBusStopDestinations.adapter = adapterDestinations
         binding.rvBusStopDestinations.layoutManager = LinearLayoutManager(requireContext())
-
-        binding.svSearchBus.addTextChangedListener(
-            DelayedTextWatcher(
-                this@BusStopDetailsFragment.lifecycle,
-                onDelayedTextChanged = { query, _, _, _ ->
-                    if (query.isNullOrEmpty()) {
-                        sendIntent(
-                            BusStopDetailsIntent.FilterDestination(
-                                query = null,
-                            )
-                        )
-                    } else {
-                        sendIntent(
-                            BusStopDetailsIntent.FilterDestination(
-                                query = query.toString(),
-                            )
-                        )
-                    }
-                })
-        )
 
         viewModel.state.observe(
             viewLifecycleOwner, { busStopsState ->
@@ -80,7 +103,22 @@ class BusStopDetailsFragment : Fragment(),
             }
         )
 
+        findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.busStopDetailsFragment) {
+                initActionBar()
+            }
+        }
+
         return binding.root
+    }
+
+    private fun initActionBar() {
+        activity?.let {
+            if (it is AppCompatActivity) {
+                val actionBar = it.supportActionBar
+                actionBar?.title = lastName
+            }
+        }
     }
 
     override fun render(state: BusStopDetailsState) {
@@ -116,9 +154,9 @@ class BusStopDetailsFragment : Fragment(),
     private fun initView(busStop: BusStopDomainModel, destinations: List<BusStopDomainModel>) {
         showProgress(false)
         binding.apply {
-            val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
-            actionBar?.title = busStop.longName
 
+            lastName = busStop.longName
+            initActionBar()
             tvIdBusStop.text = "${busStop.id}"
             tvLongNameBusStop.text = busStop.longName
             tvTimeZoneBusStop.text = busStop.timeZone

@@ -21,7 +21,7 @@
     <string name="cost">Coût :  </string>
     <string name="cost_value">%d %s</string>
     <string name="first_bus">Bus de départ :  </string>
-    <string name="id_bus">Id : %d</string>
+    <string name="id_bus">N° : %d</string>
     <string name="departure">Départ :  </string>
     <string name="arrival">Arrivé :  </string>
     <string name="no_fares">Aucun résultat trouvé pour ce trajet</string>

@@ -81,7 +81,8 @@ class BusStopsViewModel(
                         busStopsList = result.getOrNull()?.busStops?.map {
                             BusStopsUIModel(
                                 it.id,
-                                it.shortName
+                                it.shortName,
+                                it.address
                             )
                         } ?: emptyList(),
                         isFiltered = coordinates != null,

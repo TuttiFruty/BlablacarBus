@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -172,26 +173,6 @@
                 app:layout_constraintStart_toStartOf="@id/cl_details"
                 app:layout_constraintEnd_toEndOf="@id/cl_details" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_search_bus"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:hint="@string/search_hint"
-                app:endIconMode="clear_text"
-                app:layout_constraintEnd_toEndOf="@+id/cl_details"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/cl_details"
-                app:layout_constraintTop_toBottomOf="@+id/v_end_divider"
-                app:startIconDrawable="@drawable/ic_search_24dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/sv_search_bus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_bus_stop_destinations"
                 android:layout_width="0dp"
@@ -201,7 +182,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cl_details"
                 app:layout_constraintStart_toStartOf="@+id/cl_details"
-                app:layout_constraintTop_toBottomOf="@+id/ti_search_bus"
+                app:layout_constraintTop_toBottomOf="@+id/v_end_divider"
                 tools:listitem="@layout/component_destination_line" />
 
             <include

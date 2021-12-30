@@ -1,17 +1,27 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
+    <!--Final, top-level theme-->
+    <style name="Theme.BlablacarBus.DayNight" parent="Theme.BlablacarBus.Dark" />
+
     <!-- Base application theme. -->
-    <style name="Theme.BlablacarBus" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.BlablacarBus.Dark" parent="Theme.BlablacarBus">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/spiro_disco_ball</item>
+        <item name="colorPrimary">@color/midnight_green</item>
         <item name="colorPrimaryVariant">@color/olympic_blue</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/inchworm</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/midnight_green</item>
         <item name="colorSecondaryVariant">@color/dusk_green</item>
         <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Common brand color. -->
         <item name="colorAccent">@color/dusk_green</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorError">@color/inchworm</item>
+        <item name="colorOnError">@color/alice_blue</item>
+
     </style>
 </resources>

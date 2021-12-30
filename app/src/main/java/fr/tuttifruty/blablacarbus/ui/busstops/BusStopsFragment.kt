@@ -4,57 +4,70 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.snackbar.Snackbar
 import fr.tuttifruty.blablacarbus.R
-import fr.tuttifruty.blablacarbus.common.DelayedTextWatcher
+import fr.tuttifruty.blablacarbus.common.DelayedQueryTextListener
 import fr.tuttifruty.blablacarbus.common.Permission
 import fr.tuttifruty.blablacarbus.common.PermissionManager
 import fr.tuttifruty.blablacarbus.common.mvi.IView
+import fr.tuttifruty.blablacarbus.common.view.CustomDividerItemDecoration
 import fr.tuttifruty.blablacarbus.databinding.FragmentBusStopsBinding
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusStopsNavigation> {
 
-    private lateinit var binding: FragmentBusStopsBinding
-    val viewModel: BusStopsViewModel by viewModel()
-    private lateinit var adapterBusStops: BusStopsAdapter
+    private val viewModel: BusStopsViewModel by viewModel()
+    private val fusedLocationClient: FusedLocationProviderClient by inject()
     private val permissionManager = PermissionManager.from(this)
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var binding: FragmentBusStopsBinding
+    private lateinit var adapterBusStops: BusStopsAdapter
 
     private var lastSearch: String? = null
     private var lastFilter: Location? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bus_stops, container, false)
+    private var searchView: SearchView? = null
+    private var filterView: MaterialCheckBox? = null
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        adapterBusStops = BusStopsAdapter(viewModel) { busStop ->
-            sendIntent(BusStopsIntent.Navigation.GoToDetailsOfBusStop(busStop.id))
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.bottom_navigation_menu, menu)
+
+        initSearch(menu)
+
+        initFilter(menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+
+    }
+
+    private fun initSearch(menu: Menu) {
+        val searchItem = menu.findItem(R.id.action_search)
+        searchView = searchItem.actionView as SearchView
+
+        if (lastSearch != null && lastSearch?.isNotBlank() == true) {
+            searchItem.expandActionView()
+            searchView?.setQuery(lastSearch, true)
         }
-        binding.rvBusStops.adapter = adapterBusStops
-        binding.rvBusStops.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.svSearchBus.addTextChangedListener(
-            DelayedTextWatcher(
+        searchView?.setOnQueryTextListener(
+            DelayedQueryTextListener(
                 this@BusStopsFragment.lifecycle,
-                onDelayedTextChanged = { query, _, _, _ ->
-                    if (query.isNullOrEmpty()) {
+                onDefaultQueryTextSubmit = {
+                    sendIntent(BusStopsIntent.RefreshBusStops(query = it, coordinates = lastFilter))
+                },
+                onDelayedQueryTextChange = {
+                    if (it.isNullOrEmpty()) {
                         sendIntent(
                             BusStopsIntent.RefreshBusStops(
                                 query = null,
@@ -64,15 +77,23 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
                     } else {
                         sendIntent(
                             BusStopsIntent.RefreshBusStops(
-                                query = query.toString(),
+                                query = it,
                                 coordinates = lastFilter
                             )
                         )
                     }
                 })
         )
+    }
 
-        binding.cbFilterGps.setOnCheckedChangeListener { compoundButton, isFilteredByGps ->
+
+    private fun initFilter(menu: Menu) {
+        val filterItem = menu.findItem(R.id.filterByGps)
+        filterView = filterItem.actionView as MaterialCheckBox
+        filterView?.setButtonDrawable(R.drawable.checkbox_selector)
+        filterView?.isChecked = lastFilter != null
+
+        filterView?.setOnCheckedChangeListener { compoundButton, isFilteredByGps ->
             if (compoundButton.isPressed) {
                 if (isFilteredByGps) {
                     handleLocation(isFilteredByGps)
@@ -85,6 +106,23 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
                     )
                 }
             }
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBusStopsBinding.inflate(inflater, container, false).apply {
+            adapterBusStops = BusStopsAdapter(viewModel) { busStop ->
+                sendIntent(BusStopsIntent.Navigation.GoToDetailsOfBusStop(busStop.id))
+            }
+            rvBusStops.apply {
+                adapter = adapterBusStops
+                addItemDecoration(CustomDividerItemDecoration(requireContext(), R.drawable.divider))
+            }
+
+            setHasOptionsMenu(true)
         }
 
         viewModel.state.observe(
@@ -113,7 +151,7 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
                     fusedLocationClient.locationAvailability.addOnSuccessListener { locationAvailability ->
                         if (!locationAvailability.isLocationAvailable) {
                             //Location not available, we reroute the user to the settings
-                            binding.cbFilterGps.isChecked = !isFilteredByGps
+                            filterView?.isChecked = !isFilteredByGps
                             val intent =
                                 Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                             startActivity(intent)
@@ -122,21 +160,17 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
                             //We could prepare it ourself but we won't to stay simple for now
                             //One way to prepare it is to launch Google Map
                             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                                if (location != null) {
-                                    sendIntent(
-                                        BusStopsIntent.RefreshBusStops(
-                                            coordinates = location,
-                                            query = lastSearch
-                                        )
+                                sendIntent(
+                                    BusStopsIntent.RefreshBusStops(
+                                        coordinates = location,
+                                        query = lastSearch
                                     )
-                                } else {
-                                    binding.cbFilterGps.isChecked = !isFilteredByGps
-                                }
+                                )
                             }
                         }
                     }
                 } else {
-                    binding.cbFilterGps.isChecked = !isFilteredByGps
+                    filterView?.isChecked = !isFilteredByGps
                 }
             }
     }

@@ -14,30 +14,50 @@
             type="fr.tuttifruty.blablacarbus.ui.busstops.BusStopsViewModel" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:rippleColor="?attr/colorPrimary"
-        app:strokeColor="?attr/colorPrimary"
-        app:strokeWidth="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_bus_stop_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="4dp"
                 android:text="@{item.shortName}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:firstBaselineToTopHeight="@dimen/extra_normal_margin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_bus_stop_id"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Bueno aires" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_bus_stop_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:text="@{String.format(@string/id_bus, item.id)}"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                app:firstBaselineToTopHeight="@dimen/extra_normal_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="N° 1" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_bus_stop_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{item.address}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:firstBaselineToTopHeight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_bus_stop_id"
+                app:layout_constraintStart_toStartOf="@+id/tv_bus_stop_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_bus_stop_name"
+                tools:text="101 av pablo des boulous 34304 Izry-Sur-Mer" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 </layout>

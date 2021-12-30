@@ -22,13 +22,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
+        <fr.tuttifruty.blablacarbus.common.view.GradientCircularProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_marginTop="@dimen/extra_large_margin"
             android:indeterminate="true"
             android:visibility="gone"
+            android:layout_gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

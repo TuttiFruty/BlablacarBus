@@ -33,6 +33,7 @@ sealed class BusStopsState : IState {
 }
 
 data class BusStopsUIModel(
-    val id : Int,
-    val shortName : String,
+    val id: Int,
+    val shortName: String,
+    val address: String,
 )
