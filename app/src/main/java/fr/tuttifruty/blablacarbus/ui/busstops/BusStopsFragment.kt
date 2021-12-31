@@ -1,9 +1,11 @@
 package fr.tuttifruty.blablacarbus.ui.busstops
 
 import android.content.Intent
+import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
+import android.util.TypedValue
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -12,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.snackbar.Snackbar
+import com.lriccardo.timelineview.TimelineDecorator
 import fr.tuttifruty.blablacarbus.R
 import fr.tuttifruty.blablacarbus.common.DelayedQueryTextListener
 import fr.tuttifruty.blablacarbus.common.Permission
@@ -113,13 +116,26 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val colorPrimary = TypedValue()
+        val theme: Resources.Theme? = activity?.theme
+        theme?.resolveAttribute(R.attr.colorPrimary, colorPrimary, true)
+
         binding = FragmentBusStopsBinding.inflate(inflater, container, false).apply {
             adapterBusStops = BusStopsAdapter(viewModel) { busStop ->
                 sendIntent(BusStopsIntent.Navigation.GoToDetailsOfBusStop(busStop.id))
             }
             rvBusStops.apply {
                 adapter = adapterBusStops
-                addItemDecoration(CustomDividerItemDecoration(requireContext(), R.drawable.divider))
+                //holdersAdapter = ShimmerPlaceHolderAdapter()
+                addItemDecoration(TimelineDecorator(
+                    indicatorSize = 16f,
+                    lineWidth = 8f,
+                    padding = 16f,
+                    position = TimelineDecorator.Position.Left,
+                    indicatorColor = colorPrimary.data,
+                    lineColor = colorPrimary.data
+                ))
+                //holdersItemDecoration = CustomDividerItemDecoration(requireContext(), R.drawable.divider)
             }
 
             setHasOptionsMenu(true)
@@ -202,15 +218,15 @@ class BusStopsFragment : Fragment(), IView<BusStopsState, BusStopsIntent, BusSto
     }
 
     private fun initView(state: BusStopsState.ShowBusStops) {
-        showProgress(false)
+        adapterBusStops.submitList(state.busStopsList)
         this.lastFilter = state.lastFilter
         this.lastSearch = state.lastSearch
-
-        adapterBusStops.submitList(state.busStopsList)
+        showProgress(false)
     }
 
     private fun showProgress(isLoading: Boolean) {
         binding.apply {
+            //rvBusStops.toggleHoldersAdapter(isLoading)
             if (isLoading) {
                 loading.vLoading.visibility = View.VISIBLE
                 loading.progressBar.visibility = View.VISIBLE

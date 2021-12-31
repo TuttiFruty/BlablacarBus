@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "fr.tuttifruty.blablacarbus"
         minSdk 21
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -56,6 +56,13 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+
+    //UI
+    //https://facebook.github.io/shimmer-android/
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //https://github.com/lriccardo/TimelineView
+    implementation 'com.github.lriccardo:TimelineView:1.0.5'
+
 
     //Logging
     implementation "com.jakewharton.timber:timber:5.0.1"

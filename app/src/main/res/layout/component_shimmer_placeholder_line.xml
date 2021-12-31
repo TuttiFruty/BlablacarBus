@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="fr.tuttifruty.blablacarbus.ui.busstops.BusStopsUIModel" />
+
+        <variable
+            name="viewModel"
+            type="androidx.lifecycle.ViewModel" />
+    </data>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shimmer_auto_start="true"
+        app:shimmer_base_alpha=".2"
+        app:shimmer_highlight_alpha=".4">
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/component_bus_stop_line"
+            app:item="@{item}"
+            app:viewModel="@{viewModel}"/>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</layout>

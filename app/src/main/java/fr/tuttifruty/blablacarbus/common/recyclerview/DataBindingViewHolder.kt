@@ -8,6 +8,16 @@ import fr.tuttifruty.blablacarbus.BR
 class DataBindingViewHolder<T, S: ViewModel?>(private val binding: ViewDataBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
+    //https://hamurcuabi.medium.com/recyclerview-item-click-in-a-better-way-c69d9c074ddf
+    constructor(
+        binding: ViewDataBinding,
+        onViewHolderClicked: (Int) -> Unit
+    ) : this(binding) {
+        itemView.setOnClickListener {
+            onViewHolderClicked(adapterPosition)
+        }
+    }
+
     fun bind(item: T, viewModel: S?) {
         if(viewModel != null) {
             binding.setVariable(BR.viewModel, viewModel)

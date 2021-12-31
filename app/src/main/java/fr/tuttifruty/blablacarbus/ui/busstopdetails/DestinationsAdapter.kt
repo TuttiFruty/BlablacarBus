@@ -1,10 +1,16 @@
 package fr.tuttifruty.blablacarbus.ui.busstopdetails
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import fr.tuttifruty.blablacarbus.R
 import fr.tuttifruty.blablacarbus.common.recyclerview.DataBindingAdapter
 import fr.tuttifruty.blablacarbus.common.recyclerview.DataBindingViewHolder
 import fr.tuttifruty.blablacarbus.domain.model.BusStopDomainModel
+import fr.tuttifruty.blablacarbus.ui.busstops.BusStopsUIModel
+import fr.tuttifruty.blablacarbus.ui.busstops.BusStopsViewModel
 
 class DestinationsAdapter(
     viewModel: BusStopDetailsViewModel?,
@@ -27,14 +33,11 @@ class DestinationsAdapter(
         }
     }
 
-    override fun onBindViewHolder(
-        holder: DataBindingViewHolder<BusStopDomainModel, BusStopDetailsViewModel>,
-        position: Int
-    ) {
-        super.onBindViewHolder(holder, position)
-        holder.itemView.setOnClickListener {
-            val busStop = currentList[holder.adapterPosition]
-            onClick(busStop)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<BusStopDomainModel, BusStopDetailsViewModel> {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
+        return DataBindingViewHolder(binding){
+            onClick(currentList[it])
         }
     }
 
